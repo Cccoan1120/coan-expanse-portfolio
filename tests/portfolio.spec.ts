@@ -35,9 +35,13 @@ test("renders all local life records with their existing media and public links"
   await expect(page.locator(".life-story-card a")).toHaveCount(5);
   await expect(page.getByRole("link", { name: /看看我的攀岩记录/ })).toHaveAttribute("href", /douyin\.com/);
   await expect(page.getByRole("link", { name: /看看这次夜爬/ })).toHaveAttribute("href", "https://xhslink.cn/o/4XT9O0g8hh9");
-  await expect(page.getByRole("heading", { name: "耳机里的 186 小时" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "喜欢坐在观众席里" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "听别人聊聊世界" })).toBeVisible();
+  await expect(page.locator("#grassland-horseback img")).toHaveAttribute("src", "/images/life/grassland-drive.webp");
   await expect(page.locator("#life-在路上 + p")).toHaveText("喜欢往外走。去草原、爬山、攀岩，也在一次次出发里认识新的地方和新的人。");
-  await expect(page.locator("#live-comedy .life-story-card__copy > p")).toContainText("瞬间——原本只存在于耳机里的世界");
+  await expect(page.locator("#climbing .life-story-card__copy > p")).not.toContainText("第一次攀岩没多久就办了月卡");
+  await expect(page.locator("#live-comedy .life-story-card__copy > p")).toHaveText("我一直很喜欢喜剧和脱口秀，也会经常去看不同的展演和现场演出。比起隔着屏幕看，我更喜欢坐在观众席里，和一群陌生人一起笑、一起感受现场的节奏。很多有意思的观点和表达，也是在这些轻松的时刻里被记住的。");
+  await expect(page.getByRole("link", { name: /看看我的现场记录/ })).toHaveAttribute("href", /xiaohongshu\.com/);
   await expect(page.locator("#podcast-listening .life-story-card__copy > p")).toContainText("我更喜欢的是那些偶然听到的新观点——");
 });
 
@@ -55,6 +59,9 @@ test("keeps three keyboard-accessible anchor links and the brand home link", asy
   await page.goto("/");
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
   expect(await page.evaluate(() => history.scrollRestoration)).toBe("manual");
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
   const navigation = page.locator(".desktop-nav");
   await expect(navigation.getByRole("link")).toHaveCount(3);
   for (const target of navTargets) {
@@ -127,16 +134,33 @@ test("uses pointer-responsive cosmic stages and the revised about copy", async (
   await page.goto("/");
   await expect(page.locator("[data-cosmic-reactive]")).toHaveCount(9);
   if (testInfo.project.name === "desktop") {
+    const trail = page.locator(".meteor-pointer-trail");
+    await trail.evaluate((canvas: HTMLCanvasElement) => {
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      const originalStroke = context.stroke.bind(context);
+      context.stroke = (path?: Path2D) => {
+        canvas.dataset.strokeCount = String(Number(canvas.dataset.strokeCount ?? 0) + 1);
+        if (path) originalStroke(path);
+        else originalStroke();
+      };
+    });
     await page.locator(".hero-planet-stage").hover({ position: { x: 500, y: 320 } });
     await expect(page.locator(".hero-planet-stage")).toHaveAttribute("data-cosmic-active", "true");
+    await page.mouse.move(220, 260);
+    await page.mouse.move(860, 420, { steps: 24 });
+    await expect(trail).toHaveAttribute("data-visible", "true");
+    await expect.poll(() => trail.evaluate((canvas) => Number(canvas.dataset.strokeCount ?? 0))).toBeGreaterThan(0);
   } else {
     await expect(page.locator(".hero-planet-stage")).not.toHaveAttribute("data-cosmic-active", "true");
   }
-  await expect(page.locator(".about-role")).toHaveText("在产品、AI 和真实问题之间不断折腾的人。");
-  await expect(page.locator(".about-traits")).toContainText("持续折腾");
+  await expect(page.locator(".about-role")).toHaveText("ENFJ，一个喜欢认识新朋友，也喜欢把新想法做出来的人。");
+  await expect(page.locator(".about-traits li")).toHaveText(["ENFJ", "产品", "AI", "Vibe Coding", "保持好奇"]);
   await expect(page.locator(".about-facts")).toContainText("生活切片 / Moments");
-  await expect(page.locator(".about-copy > a")).toHaveText(/继续看看，我还在折腾什么/);
-  await expect(page.locator(".about-copy")).toContainText("做产品大概就是这样——从一个真实的小问题开始，然后一点点把它变得更好");
+  await expect(page.locator(".about-copy > a")).toHaveCount(0);
+  await expect(page.locator(".about-copy")).toContainText("我是一个挺外向的人，喜欢聊天、认识新朋友，也很享受和不同的人交换经历和想法。");
+  await expect(page.locator(".about-copy")).toContainText("比起做一个看起来很厉害的产品，我更喜欢解决那些真实又具体的小问题");
+  await expect(page.locator(".about-closing")).toHaveText("大概就是这样：喜欢认识人，喜欢体验新的东西，也喜欢把脑子里的想法变成真的。");
   await expect(page.locator(".hero-orbit")).toHaveCount(1);
   await expect(page.locator(".scroll-progress")).toHaveCount(1);
   await expect(page.locator(".meteor-pointer-trail")).toHaveCount(1);
@@ -178,6 +202,21 @@ test("keeps resume and contact actions in the footer", async ({ page }) => {
   await expect(footer).toContainText("17631646028@163.com");
   await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0);
   await expect(footer.getByRole("button", { name: /微信/ })).toBeVisible();
+  const contactSurface = await footer.locator(".contact-panel").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      borderWidth: style.borderTopWidth,
+      borderRadius: style.borderRadius,
+      boxShadow: style.boxShadow,
+      backdropFilter: style.backdropFilter,
+    };
+  });
+  expect(contactSurface).toEqual({
+    borderWidth: "0px",
+    borderRadius: "0px",
+    boxShadow: "none",
+    backdropFilter: "none",
+  });
 });
 
 test("loads every home image after it enters the viewport", async ({ page }) => {

@@ -94,15 +94,15 @@ export function HomePage() {
           </div>
           <div className="about-copy">
             <h3>Hi，我是陈宵瀚</h3>
-            <p className="about-role">在产品、AI 和真实问题之间不断折腾的人。</p>
-            {profile.aboutParagraphs.slice(0, 2).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            <ul className="about-traits"><li>AI</li><li>产品</li><li>数据</li><li>Vibe Coding</li><li>持续折腾</li></ul>
+            <p className="about-role"><strong>ENFJ，一个喜欢认识新朋友，也喜欢把新想法做出来的人。</strong></p>
+            {profile.aboutParagraphs.slice(0, 3).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <p className="about-closing"><strong>{profile.aboutParagraphs[3]}</strong></p>
+            <ul className="about-traits"><li>ENFJ</li><li>产品</li><li>AI</li><li>Vibe Coding</li><li>保持好奇</li></ul>
             <dl className="about-facts">
               <div><dt>{workShowcaseProjects.length}</dt><dd>作品 / Projects</dd></div>
               <div><dt>{solutionShowcaseProjects.length}</dt><dd>产品实验 / Experiments</dd></div>
               <div><dt>{lifeEntries.length}</dt><dd>生活切片 / Moments</dd></div>
             </dl>
-            <a href="#projects">继续看看，我还在折腾什么 <MaterialIcon>arrow_forward</MaterialIcon></a>
           </div>
         </div>
       </section>

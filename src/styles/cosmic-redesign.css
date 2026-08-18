@@ -229,8 +229,7 @@ input:focus-visible {
   letter-spacing: 0.12em;
 }
 
-.cosmic-section__header > a,
-.about-copy > a {
+.cosmic-section__header > a {
   display: inline-flex;
   min-height: 2.75rem;
   align-items: center;
@@ -241,9 +240,7 @@ input:focus-visible {
 }
 
 .cosmic-section__header > a:hover,
-.cosmic-section__header > a:focus-visible,
-.about-copy > a:hover,
-.about-copy > a:focus-visible {
+.cosmic-section__header > a:focus-visible {
   color: var(--accent-bright);
 }
 
@@ -1048,7 +1045,7 @@ input:focus-visible {
 
 .about-cosmos {
   display: grid;
-  grid-template-columns: minmax(22rem, 0.86fr) minmax(0, 1.14fr);
+  grid-template-columns: minmax(20rem, 0.78fr) minmax(0, 1.22fr);
   gap: clamp(3rem, 7vw, 8rem);
   align-items: center;
 }
@@ -1184,7 +1181,11 @@ input:focus-visible {
   margin-block-start: 0.4rem;
   color: var(--accent-bright);
   font-size: 1rem;
+  line-height: 1.75;
 }
+
+.about-copy .about-role strong,
+.about-copy .about-closing strong { font-weight: 580; }
 
 .about-copy p:not(.about-role) {
   max-width: 42rem;
@@ -1192,6 +1193,10 @@ input:focus-visible {
   color: var(--text-soft);
   font-size: 0.95rem;
   line-height: 1.9;
+}
+
+.about-copy p.about-closing {
+  color: var(--stellar);
 }
 
 .about-facts {
@@ -1339,15 +1344,15 @@ input:focus-visible {
   display: block;
   overflow: hidden;
   min-height: 0;
-  padding: clamp(4.5rem, 8vw, 7rem) 0 2.5rem;
-  border-block-start: 1px solid var(--cosmic-edge);
-  background: linear-gradient(180deg, oklch(8% 0.03 278 / 0.94), oklch(6.5% 0.03 278));
+  padding: clamp(2rem, 5vw, 4rem) 0 2.5rem;
+  border-block-start: 0;
+  background: linear-gradient(180deg, transparent, oklch(6.5% 0.03 278 / 0.82) 62%, oklch(6.5% 0.03 278 / 0.96));
 }
 
 .site-footer::before {
   position: absolute;
   z-index: 0;
-  inset: 18% -16% -42% 28%;
+  inset: -6% -16% -42% 28%;
   height: 92%;
   border: 1px solid oklch(66% 0.12 282 / 0.25);
   border-radius: 50% 50% 0 0;
@@ -1366,14 +1371,12 @@ input:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(22rem, 1.08fr);
   gap: clamp(2.5rem, 5vw, 5.5rem);
-  padding: clamp(1.5rem, 4vw, 3.5rem);
-  border: 1px solid oklch(70% 0.08 279 / 0.24);
-  border-radius: 1.35rem;
-  background:
-    radial-gradient(circle at 47% 16%, oklch(63% 0.12 282 / 0.13), transparent 28rem),
-    linear-gradient(132deg, oklch(17% 0.045 278 / 0.78), oklch(10% 0.027 278 / 0.9));
-  box-shadow: inset 0 1px 0 oklch(94% 0.02 278 / 0.06), 0 2.5rem 7rem oklch(2% 0.02 278 / 0.35);
-  backdrop-filter: blur(18px);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .contact-panel::before {
@@ -1411,7 +1414,7 @@ input:focus-visible {
   font-size: clamp(2.7rem, 5vw, 5.25rem);
   font-weight: 580;
   line-height: 0.98;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.035em;
 }
 
 .contact-panel__intro > p:last-child {
@@ -1711,7 +1714,7 @@ input:focus-visible {
   .life-constellation__item:nth-child(5) figure { aspect-ratio: 16 / 11; }
   .about-facts { gap: 0.45rem; }
   .about-facts dt { font-size: 1.45rem; }
-  .contact-panel { padding: 1.15rem; border-radius: 1rem; }
+  .contact-panel { padding: 0; border-radius: 0; }
   .contact-panel__intro h2 { font-size: clamp(2.35rem, 12vw, 3.15rem); }
   .contact-panel__direct { gap: 0.6rem; }
   .contact-panel__social nav { grid-template-columns: minmax(0, 1fr); }
@@ -2523,6 +2526,8 @@ input:focus-visible {
   width: 100%;
   height: 100%;
 }
+
+#grassland-horseback img { object-position: center 38%; }
 
 .life-story-card img,
 .life-story-card video {

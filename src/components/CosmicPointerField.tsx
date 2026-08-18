@@ -5,9 +5,13 @@ const reactiveSelector = "[data-cosmic-reactive]";
 type TrailPoint = {
   x: number;
   y: number;
-  life: number;
+  bornAt: number;
   width: number;
 };
+
+const trailLifetime = 520;
+const trailSampleGap = 5;
+const maxTrailPoints = 96;
 
 export function CosmicPointerField() {
   const auraRef = useRef<HTMLSpanElement>(null);
@@ -31,6 +35,7 @@ export function CosmicPointerField() {
     let latestEvent: PointerEvent | null = null;
     let previousPoint: { x: number; y: number; time: number } | null = null;
     let trailPoints: TrailPoint[] = [];
+    let lastTrailMove = 0;
     let viewportWidth = window.innerWidth;
     let viewportHeight = window.innerHeight;
 
@@ -43,6 +48,8 @@ export function CosmicPointerField() {
       canvas.style.width = `${viewportWidth}px`;
       canvas.style.height = `${viewportHeight}px`;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      trailPoints = [];
+      canvas.removeAttribute("data-visible");
     };
 
     const resetElement = (element: HTMLElement | null) => {
@@ -77,48 +84,84 @@ export function CosmicPointerField() {
       activeElement.setAttribute("data-cosmic-active", "true");
     };
 
-    const renderTrail = () => {
+    const traceTrail = (points: TrailPoint[]) => {
+      context.beginPath();
+      context.moveTo(points[0].x, points[0].y);
+      for (let index = 1; index < points.length - 1; index += 1) {
+        const point = points[index];
+        const next = points[index + 1];
+        context.quadraticCurveTo(point.x, point.y, (point.x + next.x) / 2, (point.y + next.y) / 2);
+      }
+      const last = points[points.length - 1];
+      context.quadraticCurveTo(last.x, last.y, last.x, last.y);
+    };
+
+    const renderTrail = (now: number) => {
       trailFrame = 0;
       context.clearRect(0, 0, viewportWidth, viewportHeight);
-      trailPoints = trailPoints
-        .map((point) => ({ ...point, life: point.life - 0.045 }))
-        .filter((point) => point.life > 0);
+      trailPoints = trailPoints.filter((point) => now - point.bornAt < trailLifetime);
+      const idleFade = Math.max(0, Math.min(1, 1 - (now - lastTrailMove) / 360));
 
-      if (trailPoints.length > 1) {
+      if (trailPoints.length > 1 && idleFade > 0.01) {
+        const tail = trailPoints[0];
+        const head = trailPoints[trailPoints.length - 1];
+        const beforeHead = trailPoints[trailPoints.length - 2];
+        const gradient = context.createLinearGradient(tail.x, tail.y, head.x, head.y);
+        gradient.addColorStop(0, "rgba(91, 84, 212, 0)");
+        gradient.addColorStop(0.34, `rgba(107, 105, 241, ${0.14 * idleFade})`);
+        gradient.addColorStop(0.78, `rgba(132, 198, 255, ${0.58 * idleFade})`);
+        gradient.addColorStop(1, `rgba(244, 249, 255, ${0.96 * idleFade})`);
+
         context.save();
         context.globalCompositeOperation = "lighter";
         context.lineCap = "round";
         context.lineJoin = "round";
 
-        for (let index = 1; index < trailPoints.length; index += 1) {
-          const from = trailPoints[index - 1];
-          const to = trailPoints[index];
-          const gradient = context.createLinearGradient(from.x, from.y, to.x, to.y);
-          gradient.addColorStop(0, `rgba(111, 91, 255, ${Math.max(0, from.life * 0.08)})`);
-          gradient.addColorStop(0.6, `rgba(125, 193, 255, ${Math.max(0, to.life * 0.55)})`);
-          gradient.addColorStop(1, `rgba(230, 242, 255, ${Math.max(0, to.life * 0.9)})`);
-          context.strokeStyle = gradient;
-          context.lineWidth = to.width * to.life;
-          context.shadowColor = "rgba(137, 118, 255, 0.72)";
-          context.shadowBlur = 12 * to.life;
-          context.beginPath();
-          context.moveTo(from.x, from.y);
-          context.lineTo(to.x, to.y);
-          context.stroke();
-        }
-
-        const head = trailPoints[trailPoints.length - 1];
-        context.fillStyle = `rgba(238, 247, 255, ${head.life})`;
-        context.shadowColor = "rgba(144, 127, 255, 0.9)";
+        traceTrail(trailPoints);
+        context.strokeStyle = gradient;
+        context.lineWidth = head.width * 3.4;
+        context.shadowColor = `rgba(113, 101, 255, ${0.52 * idleFade})`;
         context.shadowBlur = 18;
+        context.globalAlpha = 0.34;
+        context.stroke();
+
+        traceTrail(trailPoints);
+        context.lineWidth = head.width * 1.55;
+        context.shadowColor = `rgba(137, 194, 255, ${0.7 * idleFade})`;
+        context.shadowBlur = 11;
+        context.globalAlpha = 0.78;
+        context.stroke();
+
+        traceTrail(trailPoints);
+        context.lineWidth = Math.max(0.9, head.width * 0.42);
+        context.shadowBlur = 4;
+        context.globalAlpha = 1;
+        context.stroke();
+
+        const angle = Math.atan2(head.y - beforeHead.y, head.x - beforeHead.x);
+        const flareLength = 12 + head.width * 3.5;
+        const flare = context.createLinearGradient(-flareLength, 0, 4, 0);
+        flare.addColorStop(0, "rgba(137, 126, 255, 0)");
+        flare.addColorStop(0.72, `rgba(183, 224, 255, ${0.34 * idleFade})`);
+        flare.addColorStop(1, `rgba(255, 255, 255, ${0.94 * idleFade})`);
+        context.translate(head.x, head.y);
+        context.rotate(angle);
+        context.fillStyle = flare;
+        context.shadowColor = `rgba(156, 211, 255, ${0.72 * idleFade})`;
+        context.shadowBlur = 12;
         context.beginPath();
-        context.arc(head.x, head.y, Math.max(1.2, head.width * 0.58), 0, Math.PI * 2);
+        context.moveTo(-flareLength, 0);
+        context.quadraticCurveTo(-2, -head.width * 0.62, 4, 0);
+        context.quadraticCurveTo(-2, head.width * 0.62, -flareLength, 0);
         context.fill();
         context.restore();
       }
 
-      if (trailPoints.length) trailFrame = window.requestAnimationFrame(renderTrail);
-      else canvas.removeAttribute("data-visible");
+      if (trailPoints.length > 1 && idleFade > 0.01) trailFrame = window.requestAnimationFrame(renderTrail);
+      else {
+        trailPoints = [];
+        canvas.removeAttribute("data-visible");
+      }
     };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -128,12 +171,22 @@ export function CosmicPointerField() {
       const now = performance.now();
       if (previousPoint) {
         const distance = Math.hypot(event.clientX - previousPoint.x, event.clientY - previousPoint.y);
-        if (distance > 2) {
+        if (distance > 0.75) {
           const elapsed = Math.max(8, now - previousPoint.time);
           const speed = distance / elapsed;
-          trailPoints.push({ x: previousPoint.x, y: previousPoint.y, life: 0.72, width: 1.4 });
-          trailPoints.push({ x: event.clientX, y: event.clientY, life: 1, width: Math.min(4.8, 1.8 + speed * 2.1) });
-          trailPoints = trailPoints.slice(-28);
+          const sampleCount = Math.min(32, Math.max(1, Math.ceil(distance / trailSampleGap)));
+          const width = Math.min(3.3, 1.25 + speed * 0.85);
+          for (let step = 1; step <= sampleCount; step += 1) {
+            const progress = step / sampleCount;
+            trailPoints.push({
+              x: previousPoint.x + (event.clientX - previousPoint.x) * progress,
+              y: previousPoint.y + (event.clientY - previousPoint.y) * progress,
+              bornAt: now,
+              width,
+            });
+          }
+          trailPoints = trailPoints.slice(-maxTrailPoints);
+          lastTrailMove = now;
           canvas.setAttribute("data-visible", "true");
           if (!trailFrame) trailFrame = window.requestAnimationFrame(renderTrail);
         }
@@ -160,6 +213,7 @@ export function CosmicPointerField() {
       if (interactionFrame) window.cancelAnimationFrame(interactionFrame);
       if (trailFrame) window.cancelAnimationFrame(trailFrame);
       resetElement(activeElement);
+      context.clearRect(0, 0, viewportWidth, viewportHeight);
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("pointermove", onPointerMove);
       document.documentElement.removeEventListener("pointerenter", onPointerEnter);

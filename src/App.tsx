@@ -50,7 +50,12 @@ export function App() {
 
   useLayoutEffect(() => {
     if (!location.hash) {
-      const resetScroll = () => window.scrollTo(0, 0);
+      const resetScroll = () => {
+        const previousBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        window.scrollTo(0, 0);
+        document.documentElement.style.scrollBehavior = previousBehavior;
+      };
       resetScroll();
       const frame = window.requestAnimationFrame(resetScroll);
       const timer = window.setTimeout(resetScroll, 80);
