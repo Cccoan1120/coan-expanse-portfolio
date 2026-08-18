@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Teeni Insight Suite portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#163a66"/>
+  <path d="M78 100h244v168H178l-58 48v-48H78z" fill="#f4c95d"/>
+  <path d="M190 244h244v168H288l-58 44v-44h-40z" fill="#f2f5f8"/>
+  <path d="M246 356v-58M298 356v-92M350 356v-126" stroke="#2c7bd9" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="136" cy="180" r="16" fill="#163a66"/><circle cx="196" cy="180" r="16" fill="#163a66"/><circle cx="256" cy="180" r="16" fill="#163a66"/>
+</svg>

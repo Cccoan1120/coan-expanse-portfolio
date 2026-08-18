@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">OfferExpert portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#342653"/>
+  <path d="M116 80h218l76 78v274H116z" fill="#f5f0df"/>
+  <path d="M334 80v84h76" fill="#c9a7ff"/>
+  <path d="M170 208h176M170 262h128M170 316h92" stroke="#342653" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="350" cy="352" r="76" fill="#f1b85b"/>
+  <path d="M316 352l24 24 48-58" fill="none" stroke="#342653" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

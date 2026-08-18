@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Smart Agriculture Live portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#183a2b"/>
+  <path d="M256 408V222" stroke="#eff4d5" stroke-width="26" stroke-linecap="round"/>
+  <path d="M248 274c-82 2-124-38-126-116 80 0 126 40 126 116zM264 226c4-72 46-108 126-108-2 78-46 112-126 108z" fill="#96d35f"/>
+  <path d="M118 390h276" stroke="#e8b85e" stroke-width="26" stroke-linecap="round"/>
+  <path d="M326 292a76 76 0 0 1 0 108M366 258a124 124 0 0 1 0 176" fill="none" stroke="#4fd1c5" stroke-width="20" stroke-linecap="round"/>
+</svg>

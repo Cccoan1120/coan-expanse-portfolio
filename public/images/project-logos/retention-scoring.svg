@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Retention Scoring Pipeline portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#2c3240"/>
+  <path d="M142 188a134 134 0 0 1 220-34l30-30v94h-94l30-30a86 86 0 0 0-146 24" fill="none" stroke="#ff9f58" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M370 324a134 134 0 0 1-220 34l-30 30v-94h94l-30 30a86 86 0 0 0 146-24" fill="none" stroke="#75b7ff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="256" cy="256" r="56" fill="#f4f0e8"/>
+  <path d="M256 220v72M220 256h72" stroke="#2c3240" stroke-width="18" stroke-linecap="round"/>
+</svg>

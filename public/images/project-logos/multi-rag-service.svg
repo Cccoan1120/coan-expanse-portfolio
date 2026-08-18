@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Multi RAG Service portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#102d3c"/>
+  <path d="M256 250L138 148M256 250L374 148M256 250L138 366M256 250L374 366" stroke="#6dd8c9" stroke-width="22"/>
+  <circle cx="256" cy="250" r="72" fill="#f0c75e"/>
+  <circle cx="138" cy="148" r="50" fill="#f4f1e8"/><circle cx="374" cy="148" r="50" fill="#f4f1e8"/><circle cx="138" cy="366" r="50" fill="#f4f1e8"/><circle cx="374" cy="366" r="50" fill="#f4f1e8"/>
+  <path d="M228 250h56M256 222v56" stroke="#102d3c" stroke-width="20" stroke-linecap="round"/>
+</svg>

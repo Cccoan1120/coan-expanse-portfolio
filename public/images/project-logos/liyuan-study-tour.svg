@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Liyuan Study Tour portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#1e5146"/>
+  <path d="M94 396c52-112 108-78 150-158 44-84 96-98 176-126" fill="none" stroke="#f3b85c" stroke-width="26" stroke-linecap="round" stroke-dasharray="4 42"/>
+  <path d="M174 218l82-72 82 72v124H174z" fill="#f4f0df"/>
+  <path d="M144 222l112-100 112 100" fill="none" stroke="#e56d58" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="230" y="270" width="52" height="72" fill="#1e5146"/>
+</svg>

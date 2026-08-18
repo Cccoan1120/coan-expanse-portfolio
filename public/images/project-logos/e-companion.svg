@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">E Companion portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#6d2638"/>
+  <rect x="132" y="132" width="248" height="248" rx="44" fill="#f4ead8"/>
+  <path d="M196 208h120v96H196z" fill="#e45f56"/>
+  <path d="M164 100v56M228 100v56M292 100v56M356 100v56M164 356v56M228 356v56M292 356v56M356 356v56M100 164h56M100 228h56M100 292h56M100 356h56M356 164h56M356 228h56M356 292h56M356 356h56" stroke="#f0b85c" stroke-width="18" stroke-linecap="round"/>
+  <path d="M222 258h68" stroke="#f4ead8" stroke-width="18" stroke-linecap="round"/>
+</svg>

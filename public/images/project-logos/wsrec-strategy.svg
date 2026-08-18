@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">WSREC Strategy portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#153b4b"/>
+  <path d="M256 72l142 52v116c0 94-56 156-142 198-86-42-142-104-142-198V124z" fill="#e9f3ef"/>
+  <rect x="168" y="164" width="176" height="154" rx="18" fill="#55c7c2"/>
+  <path d="M168 210h176M210 146v36M302 146v36" stroke="#153b4b" stroke-width="20" stroke-linecap="round"/>
+  <path d="M208 260l30 30 70-76" fill="none" stroke="#e65353" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

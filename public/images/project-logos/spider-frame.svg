@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Spider Frame portfolio display mark">
+  <rect width="512" height="512" rx="96" fill="#17191e"/>
+  <path d="M116 184v-44a24 24 0 0 1 24-24h44M328 116h44a24 24 0 0 1 24 24v44M396 328v44a24 24 0 0 1-24 24h-44M184 396h-44a24 24 0 0 1-24-24v-44" fill="none" stroke="#f4eee5" stroke-width="22" stroke-linecap="round"/>
+  <path d="M164 256h184" stroke="#ff5f58" stroke-width="18" stroke-linecap="round"/>
+  <path d="M256 164v184" stroke="#62d8cf" stroke-width="18" stroke-linecap="round"/>
+  <rect x="201" y="201" width="110" height="110" rx="28" fill="#f3bf4f"/>
+  <circle cx="256" cy="256" r="25" fill="#17191e"/>
+  <circle cx="351" cy="207" r="9" fill="#f4eee5"/>
+  <circle cx="373" cy="230" r="6" fill="#f4eee5"/>
+  <circle cx="355" cy="250" r="5" fill="#f4eee5"/>
+</svg>

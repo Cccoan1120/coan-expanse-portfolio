@@ -1,0 +1,58 @@
+:root {
+  color-scheme: dark;
+  --font-sans: "Noto Sans SC Variable", "Hanken Grotesk Variable", sans-serif;
+  --font-display: "Hanken Grotesk Variable", "Noto Sans SC Variable", sans-serif;
+  --font-project-serif: "Cormorant Garamond Variable", "Hanken Grotesk Variable", serif;
+  --font-mono: "JetBrains Mono Variable", "Noto Sans Mono CJK SC", monospace;
+
+  --void: oklch(9% 0.025 275);
+  --void-deep: oklch(6.5% 0.02 275);
+  --surface: oklch(15% 0.035 275);
+  --surface-low: oklch(11.5% 0.03 275);
+  --surface-high: oklch(20% 0.045 275);
+  --stellar: oklch(95% 0.012 270);
+  --text: oklch(91% 0.015 270);
+  --text-soft: oklch(75% 0.025 270);
+  --text-muted: oklch(57% 0.03 270);
+  --accent: oklch(76% 0.13 282);
+  --accent-bright: oklch(84% 0.11 278);
+  --accent-dim: oklch(45% 0.11 282);
+  --ice: var(--accent-bright);
+  --ice-dim: var(--accent-dim);
+  --line: oklch(31% 0.07 280);
+  --line-soft: oklch(23% 0.05 280);
+  --amber: var(--accent);
+  --amber-dark: var(--accent-dim);
+  --danger: oklch(69% 0.14 28);
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.375rem;
+  --text-4xl: 4rem;
+
+  --header-height: 4.5rem;
+  --rail-width: 5rem;
+  --rail-expanded: 16rem;
+  --page-margin: clamp(1rem, 4.45vw, 4rem);
+  --max-width: 90rem;
+  --gutter: 1.5rem;
+  --measure: 46rem;
+  --rule: 1px;
+  --radius: 0.5rem;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}

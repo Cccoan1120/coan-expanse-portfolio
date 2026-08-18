@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Supply Chain Agents portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#252a2d"/>
+  <path d="M256 256L128 142M256 256L390 160M256 256L158 388M256 256L384 374" stroke="#f0cf63" stroke-width="22"/>
+  <rect x="198" y="198" width="116" height="116" rx="26" fill="#7ed09b"/>
+  <circle cx="128" cy="142" r="48" fill="#f2f0e8"/><circle cx="390" cy="160" r="48" fill="#f2f0e8"/><circle cx="158" cy="388" r="48" fill="#f2f0e8"/><circle cx="384" cy="374" r="48" fill="#f2f0e8"/>
+</svg>

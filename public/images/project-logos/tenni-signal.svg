@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Tenni Signal portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#f4f0e8"/>
+  <path d="M256 74l144 54v112c0 96-55 157-144 198-89-41-144-102-144-198V128z" fill="#20242a"/>
+  <circle cx="256" cy="270" r="26" fill="#ff5a55"/>
+  <path d="M205 232a72 72 0 0 1 102 0M168 194a124 124 0 0 1 176 0" fill="none" stroke="#f4f0e8" stroke-width="22" stroke-linecap="round"/>
+  <path d="M256 296v56" stroke="#ff5a55" stroke-width="24" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">KOL Review Desk portfolio mark</title>
+  <rect width="512" height="512" rx="72" fill="#123b35"/>
+  <path d="M92 112h328v220H244l-84 68v-68H92z" fill="#f8f2df"/>
+  <path d="M142 178h164M142 226h108" stroke="#123b35" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="350" cy="262" r="76" fill="#ff7aa2"/>
+  <path d="M316 262l24 24 46-54" fill="none" stroke="#123b35" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
