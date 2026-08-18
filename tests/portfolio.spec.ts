@@ -202,6 +202,19 @@ test("keeps resume and contact actions in the footer", async ({ page }) => {
   await expect(footer).toContainText("17631646028@163.com");
   await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0);
   await expect(footer.getByRole("button", { name: /微信/ })).toBeVisible();
+  const footerSurface = await footer.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      decoration: getComputedStyle(element, "::before").content,
+    };
+  });
+  expect(footerSurface).toEqual({
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    backgroundImage: "none",
+    decoration: "none",
+  });
   const contactSurface = await footer.locator(".contact-panel").evaluate((element) => {
     const style = getComputedStyle(element);
     return {
@@ -209,6 +222,7 @@ test("keeps resume and contact actions in the footer", async ({ page }) => {
       borderRadius: style.borderRadius,
       boxShadow: style.boxShadow,
       backdropFilter: style.backdropFilter,
+      decoration: getComputedStyle(element, "::before").content,
     };
   });
   expect(contactSurface).toEqual({
@@ -216,6 +230,7 @@ test("keeps resume and contact actions in the footer", async ({ page }) => {
     borderRadius: "0px",
     boxShadow: "none",
     backdropFilter: "none",
+    decoration: "none",
   });
 });
 
