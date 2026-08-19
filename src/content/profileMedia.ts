@@ -11,7 +11,7 @@ export const profileMedia = {
   horseback: {
     ...asset("horseback", "陈宵瀚和朋友去草原骑马时的剪影"),
     portrait: false,
-    fullWidth: 1280,
+    fullWidth: 952,
     mobileBase: "/images/profile/horseback-mobile",
   },
   offDuty: asset("off-duty", "陈宵瀚在草原旅行途中坐在车里"),
