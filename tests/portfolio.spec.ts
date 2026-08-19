@@ -161,9 +161,60 @@ test("uses pointer-responsive cosmic stages and the revised about copy", async (
   await expect(page.locator(".about-copy")).toContainText("我是一个挺外向的人，喜欢聊天、认识新朋友，也很享受和不同的人交换经历和想法。");
   await expect(page.locator(".about-copy")).toContainText("比起做一个看起来很厉害的产品，我更喜欢解决那些真实又具体的小问题");
   await expect(page.locator(".about-closing")).toHaveText("大概就是这样：喜欢认识人，喜欢体验新的东西，也喜欢把脑子里的想法变成真的。");
+  await expect(page.locator(".about-experience-list li")).toHaveCount(3);
+  await expect(page.locator(".about-experience-list")).toContainText("北京汀灵智能科技有限公司");
+  await expect(page.locator(".about-experience-list")).toContainText("产品运营实习生");
+  await expect(page.locator(".about-experience-list")).toContainText("北京五八信息技术有限公司（58 同城）");
+  await expect(page.locator(".about-experience-list")).toContainText("海外增长运营实习生");
+  await expect(page.locator(".about-experience-list")).toContainText("致同会计师事务所（特殊普通合伙）");
+  await expect(page.locator(".about-experience-list")).toContainText("审计实习生");
+  await expect(page.locator(".about-honors-list li")).toHaveText([
+    "2024年国家奖学金",
+    "2025年河北省优秀毕业生",
+    "2026年“挑战杯”首都大学生创业计划竞赛专项赛特等奖",
+    "2026年“挑战杯”首都大学生创业计划竞赛主赛道三等奖",
+  ]);
+  const historySurface = await page.locator(".about-history").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backdropFilter: style.backdropFilter,
+      backgroundColor: style.backgroundColor,
+      borderRadius: style.borderRadius,
+      borderWidth: style.borderTopWidth,
+    };
+  });
+  expect(historySurface.backdropFilter).toContain("blur");
+  expect(historySurface.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+  expect(historySurface.borderRadius).toBe("8px");
+  expect(historySurface.borderWidth).toBe("1px");
   await expect(page.locator(".hero-orbit")).toHaveCount(1);
   await expect(page.locator(".scroll-progress")).toHaveCount(1);
   await expect(page.locator(".meteor-pointer-trail")).toHaveCount(1);
+});
+
+test("plays a staged opening across the home hero", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  await expect(page.locator(".hero-name-character")).toHaveText(["陈", "宵", "瀚"]);
+  await expect(page.locator("#home-title")).toHaveAttribute("aria-label", "陈宵瀚");
+  const openingAnimations = await page.locator(".hero-name-character, .hero-eyebrow, .hero-planet-stage")
+    .evaluateAll((elements) => elements.map((element) => getComputedStyle(element).animationName));
+  expect(openingAnimations).toContain("hero-name-unfold");
+  expect(openingAnimations).toContain("hero-content-unfold");
+  expect(openingAnimations).toContain("hero-stage-unfold");
+  await expect(page.locator("#home-title")).toBeVisible();
+  await expect(page.locator(".hero-planet-stage")).toBeVisible();
+});
+
+test("keeps the about history rail compact on wide screens", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/#about");
+  const widths = await page.locator("#about").evaluate((about) => ({
+    section: about.getBoundingClientRect().width,
+    history: about.querySelector(".about-history")?.getBoundingClientRect().width ?? 0,
+  }));
+  expect(widths.history).toBeLessThanOrEqual(1313);
+  expect(widths.section - widths.history).toBeGreaterThanOrEqual(100);
 });
 
 test("redirects legacy routes and preserves valid record anchors", async ({ page }) => {
@@ -190,7 +241,7 @@ test("redirects legacy routes and preserves valid record anchors", async ({ page
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("这页什么也没有。");
 });
 
-test("keeps resume and contact actions in the footer", async ({ page }) => {
+test("keeps resume and contact actions in the footer", async ({ page }, testInfo) => {
   await page.goto("/#contact");
   const footer = page.locator(".site-footer");
   await expect(footer.getByRole("link", { name: /简历/ })).toHaveAttribute("href", "/resume/chen-xiaohan-resume.pdf");
@@ -202,6 +253,27 @@ test("keeps resume and contact actions in the footer", async ({ page }) => {
   await expect(footer).toContainText("17631646028@163.com");
   await expect(footer.locator('a[href^="mailto:"]')).toHaveCount(0);
   await expect(footer.getByRole("button", { name: /微信/ })).toBeVisible();
+  const socialTitle = footer.locator(".contact-panel__social h3");
+  await expect(socialTitle).toHaveText("也可以在这些平台找到我。");
+  await expect(socialTitle.locator("span")).toHaveText(["也可以在这些平台", "找到我。"]);
+  await expect(footer.locator(".footer-bottom")).toContainText("纵有疾风起，人生不言弃");
+  await expect(footer.locator(".footer-bottom")).not.toContainText("想出发就出发");
+  if (testInfo.project.name === "desktop") {
+    const contactRhythm = await footer.evaluate((element) => {
+      const direct = element.querySelector(".contact-panel__direct")?.getBoundingClientRect();
+      const social = element.querySelector(".contact-panel__social")?.getBoundingClientRect();
+      const contactTitle = element.querySelector(".contact-panel__intro h2");
+      const socialTitle = element.querySelector(".contact-panel__social h3");
+      return {
+        gap: direct && social ? social.top - direct.bottom : Number.POSITIVE_INFINITY,
+        contactTitleSize: contactTitle ? Number.parseFloat(getComputedStyle(contactTitle).fontSize) : 0,
+        socialTitleSize: socialTitle ? Number.parseFloat(getComputedStyle(socialTitle).fontSize) : Number.POSITIVE_INFINITY,
+      };
+    });
+    expect(contactRhythm.gap).toBeGreaterThanOrEqual(24);
+    expect(contactRhythm.gap).toBeLessThanOrEqual(72);
+    expect(contactRhythm.socialTitleSize).toBeLessThan(contactRhythm.contactTitleSize / 2);
+  }
   const footerSurface = await footer.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
@@ -313,4 +385,7 @@ test("freezes transitions for reduced motion", async ({ page }) => {
   await expect(page.locator(".observatory-shader")).toHaveAttribute("data-motion", "static");
   const duration = await page.locator(".showcase-logo-stage img").first().evaluate((element) => getComputedStyle(element).transitionDuration);
   expect(Number.parseFloat(duration)).toBeLessThanOrEqual(0.00001);
+  const openingDurations = await page.locator(".hero-name-character, .hero-planet-stage")
+    .evaluateAll((elements) => elements.map((element) => Number.parseFloat(getComputedStyle(element).animationDuration)));
+  expect(openingDurations.every((value) => value <= 0.00001)).toBe(true);
 });

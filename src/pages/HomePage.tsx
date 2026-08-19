@@ -4,7 +4,7 @@ import { MaterialIcon } from "../components/MaterialIcon";
 import { ProjectShowcase } from "../components/ProjectShowcase";
 import { ResponsiveImage } from "../components/ResponsiveImage";
 import { lifeEntries } from "../content/life";
-import { profile } from "../content/profile";
+import { honors, internships, profile } from "../content/profile";
 import { profileMedia } from "../content/profileMedia";
 import { solutionShowcaseProjects, workShowcaseProjects } from "../content/projects";
 
@@ -36,7 +36,11 @@ export function HomePage() {
         <div className="cosmic-hero__grid page-shell">
           <div className="cosmic-hero__copy">
             <p className="hero-eyebrow"><span>你好，我是</span><small>HELLO, I'M</small></p>
-            <h1 id="home-title">陈宵瀚</h1>
+            <h1 id="home-title" aria-label={profile.name}>
+              {Array.from(profile.name).map((character) => (
+                <span className="hero-name-character" aria-hidden="true" key={character}>{character}</span>
+              ))}
+            </h1>
             <p className="hero-english-name">COAN CHEN</p>
             <p className="hero-statement">世界动荡 我不摇晃</p>
             <ul className="hero-traits" aria-label="个人标签">
@@ -104,6 +108,36 @@ export function HomePage() {
               <div><dt>{lifeEntries.length}</dt><dd>生活切片 / Moments</dd></div>
             </dl>
           </div>
+        </div>
+        <div className="about-history" aria-label="实习与获奖经历">
+          <section className="about-history__group" aria-labelledby="about-experience-title">
+            <header className="about-history__header">
+              <h3 id="about-experience-title">实习经历</h3>
+              <small>EXPERIENCE</small>
+            </header>
+            <ul className="about-experience-list">
+              {internships.map((internship) => (
+                <li key={internship.company}>
+                  <span className="about-history__company">{internship.company}</span>
+                  <span className="about-history__role">{internship.role}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section className="about-history__group" aria-labelledby="about-honors-title">
+            <header className="about-history__header">
+              <h3 id="about-honors-title">获奖经历</h3>
+              <small>HONORS</small>
+            </header>
+            <ul className="about-honors-list">
+              {honors.map((honor) => (
+                <li key={`${honor.year}-${honor.title}`}>
+                  <time dateTime={honor.year.slice(0, 4)}>{honor.year}</time>
+                  <span>{honor.title}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </section>
     </main>

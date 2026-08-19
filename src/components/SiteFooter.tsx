@@ -53,7 +53,7 @@ export function SiteFooter({ onOpenWechat }: { onOpenWechat: () => void }) {
           </div>
 
           <div className="contact-panel__social">
-            <div><p>SOCIAL</p><h3>也可以在这些平台找到我。</h3></div>
+            <div><p>SOCIAL</p><h3><span>也可以在这些平台</span><span>找到我。</span></h3></div>
             <nav aria-label="社交平台">
               {socialLinks.map((link) => (
                 <a href={link.href} target="_blank" rel="noreferrer" key={link.platform}>
@@ -74,7 +74,7 @@ export function SiteFooter({ onOpenWechat }: { onOpenWechat: () => void }) {
             </div>
             <small>COAN EXPANSE</small>
           </div>
-          <p>想出发就出发。空下来，再做点自己会用的东西。</p>
+          <p>纵有疾风起，人生不言弃</p>
           <p>© {new Date().getFullYear()} 霄汉无垠 COAN EXPANSE</p>
         </div>
       </div>

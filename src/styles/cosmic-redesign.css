@@ -246,6 +246,7 @@ input:focus-visible {
 
 /* Hero */
 .cosmic-hero {
+  --hero-reveal-distance: 1.2rem;
   position: relative;
   min-height: min(55rem, 100dvh);
   overflow: hidden;
@@ -276,7 +277,6 @@ input:focus-visible {
   position: relative;
   z-index: 4;
   max-width: 39rem;
-  animation: cosmic-copy-in 820ms var(--ease) both;
 }
 
 .hero-eyebrow {
@@ -284,6 +284,7 @@ input:focus-visible {
   align-items: center;
   gap: 0.85rem;
   color: var(--text-soft);
+  animation: hero-content-unfold 480ms 40ms var(--ease) backwards;
 }
 
 .hero-eyebrow span {
@@ -316,20 +317,34 @@ input:focus-visible {
 }
 
 .cosmic-hero h1 {
+  display: flex;
   max-width: none;
   margin-block-start: 1rem;
+  overflow: clip;
   color: var(--text);
   font-size: clamp(4.4rem, 6.2vw, 6.8rem);
   font-weight: 720;
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
+  perspective: 40rem;
   text-shadow: 0 0 2.5rem oklch(67% 0.15 282 / 0.14);
 }
+
+.hero-name-character {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  animation: hero-name-unfold 640ms var(--ease) backwards;
+}
+
+.hero-name-character:nth-child(1) { animation-delay: 110ms; }
+.hero-name-character:nth-child(2) { animation-delay: 165ms; }
+.hero-name-character:nth-child(3) { animation-delay: 220ms; }
 
 .hero-english-name {
   margin-block-start: 0.7rem;
   font-size: clamp(0.82rem, 1vw, 1rem);
   letter-spacing: 0.5em;
+  animation: hero-content-unfold 440ms 280ms var(--ease) backwards;
 }
 
 .cosmic-hero__copy > .hero-statement {
@@ -340,6 +355,7 @@ input:focus-visible {
   font-weight: 560;
   line-height: 1.4;
   letter-spacing: -0.025em;
+  animation: hero-content-unfold 480ms 330ms var(--ease) backwards;
 }
 
 .hero-traits {
@@ -357,7 +373,12 @@ input:focus-visible {
   color: var(--text-soft);
   font-size: 0.78rem;
   text-align: center;
+  animation: hero-content-unfold 460ms var(--ease) backwards;
 }
+
+.hero-traits li:nth-child(1) { animation-delay: 390ms; }
+.hero-traits li:nth-child(2) { animation-delay: 435ms; }
+.hero-traits li:nth-child(3) { animation-delay: 480ms; }
 
 .hero-current {
   margin-block-start: 1.35rem;
@@ -369,6 +390,7 @@ input:focus-visible {
   gap: 0.55rem;
   color: var(--text-soft);
   font-size: 0.78rem;
+  animation: hero-content-unfold 420ms 520ms var(--ease) backwards;
 }
 
 .hero-current__label i {
@@ -404,8 +426,13 @@ input:focus-visible {
     linear-gradient(100deg, oklch(22% 0.07 282 / 0.34), transparent 56%),
     oklch(10% 0.03 278 / 0.52);
   box-shadow: inset 0 1px 0 oklch(90% 0.04 282 / 0.04);
+  animation: hero-content-unfold 520ms var(--ease) backwards;
   transition: border-color 220ms ease, background 220ms ease, transform 220ms var(--ease);
 }
+
+.hero-current article:nth-child(1) { animation-delay: 560ms; }
+.hero-current article:nth-child(2) { animation-delay: 615ms; }
+.hero-current article:nth-child(3) { animation-delay: 670ms; }
 
 .hero-current article::before {
   position: absolute;
@@ -462,6 +489,7 @@ input:focus-visible {
   border-radius: 999px;
   background: linear-gradient(105deg, oklch(59% 0.19 282 / 0.78), oklch(38% 0.14 282 / 0.62));
   box-shadow: 0 0.8rem 2rem oklch(45% 0.18 282 / 0.16), inset 0 1px 0 oklch(95% 0.03 282 / 0.2);
+  animation: hero-content-unfold 480ms 740ms var(--ease) backwards;
   transition: filter 220ms ease, transform 220ms var(--ease), border-color 220ms ease;
 }
 
@@ -512,13 +540,14 @@ input:focus-visible {
 .hero-explore:focus-visible .material-symbols-outlined { transform: translateY(0.18rem); }
 
 .hero-planet-stage {
+  --hero-stage-offset: 2.5rem;
   position: relative;
   z-index: 2;
   width: min(100%, 45rem);
   aspect-ratio: 1;
   justify-self: end;
   isolation: isolate;
-  animation: cosmic-planet-in 980ms 100ms var(--ease) both;
+  animation: hero-stage-unfold 820ms 120ms var(--ease) backwards;
 }
 
 .hero-nebula {
@@ -1226,6 +1255,113 @@ input:focus-visible {
   font-size: 0.75rem;
 }
 
+.about-history {
+  display: grid;
+  overflow: hidden;
+  width: min(100%, 82rem);
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  margin-block-start: clamp(2.5rem, 5vw, 4rem);
+  margin-inline: auto;
+  border: 1px solid oklch(72% 0.1 276 / 0.28);
+  border-radius: var(--radius);
+  background: oklch(14% 0.045 278 / 0.56);
+  box-shadow: 0 1.75rem 4.5rem -2.75rem oklch(3% 0.03 278 / 0.86);
+  -webkit-backdrop-filter: blur(1.4rem) saturate(135%);
+  backdrop-filter: blur(1.4rem) saturate(135%);
+}
+
+.about-history__group {
+  min-width: 0;
+  padding: clamp(1.2rem, 2.4vw, 1.8rem);
+}
+
+.about-history__group + .about-history__group {
+  border-inline-start: 1px solid oklch(72% 0.1 276 / 0.2);
+}
+
+.about-history__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-end: 0.9rem;
+}
+
+.about-history__header h3 {
+  color: var(--stellar);
+  font-size: 1.1rem;
+  font-weight: 580;
+  letter-spacing: 0;
+}
+
+.about-history__header small {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.61rem;
+  letter-spacing: 0;
+}
+
+.about-experience-list,
+.about-honors-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-experience-list li {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1.35fr) minmax(7.5rem, 0.65fr);
+  gap: 0.85rem;
+  align-items: baseline;
+  padding-block: 0.68rem;
+  border-block-start: 1px solid oklch(72% 0.08 276 / 0.16);
+}
+
+.about-history__company {
+  color: var(--text);
+  font-size: 0.8rem;
+  line-height: 1.58;
+}
+
+.about-history__role {
+  justify-self: end;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  line-height: 1.58;
+  text-align: end;
+}
+
+.about-honors-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.1rem;
+}
+
+.about-honors-list li {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: baseline;
+  padding-block: 0.68rem;
+  border-block-start: 1px solid oklch(72% 0.08 276 / 0.16);
+}
+
+.about-honors-list time {
+  color: var(--ice);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.about-honors-list span {
+  color: var(--text);
+  font-size: 0.76rem;
+  line-height: 1.58;
+}
+
 /* Inner pages */
 .life-page,
 .projects-page,
@@ -1356,7 +1492,8 @@ input:focus-visible {
   overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(22rem, 1.08fr);
-  gap: clamp(2.5rem, 5vw, 5.5rem);
+  column-gap: clamp(2.5rem, 5vw, 5.5rem);
+  row-gap: clamp(1.5rem, 3vw, 2.5rem);
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -1449,10 +1586,10 @@ input:focus-visible {
 .contact-panel__social {
   display: grid;
   grid-column: 1 / -1;
-  grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr);
-  gap: 2rem;
-  align-items: end;
-  padding-block-start: clamp(1.75rem, 4vw, 3rem);
+  grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1.58fr);
+  gap: 1.5rem;
+  align-items: center;
+  padding-block-start: 1.5rem;
   border-block-start: 1px solid oklch(70% 0.07 278 / 0.18);
 }
 
@@ -1464,15 +1601,31 @@ input:focus-visible {
 }
 
 .contact-panel__social h3 {
-  margin-block-start: 0.6rem;
+  margin-block-start: 0.4rem;
   color: var(--stellar);
-  font-size: clamp(1.65rem, 3vw, 3rem);
+  font-size: clamp(1.1rem, 1.4vw, 1.25rem);
   font-weight: 560;
-  letter-spacing: -0.04em;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
 }
 
+.contact-panel__social h3 span { display: block; white-space: nowrap; }
+
 .contact-panel__social nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
-.contact-panel__social nav a { min-height: 4.75rem; }
+.contact-panel__social nav a {
+  min-height: 4.25rem;
+  grid-template-columns: 2.35rem minmax(0, 1fr) 1.25rem;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+}
+
+.contact-panel__social .contact-card__icon {
+  width: 2.35rem;
+  height: 2.35rem;
+}
+
+.contact-panel__social .contact-card__copy strong { font-size: 0.9rem; }
+.contact-panel__social .contact-card__copy small { font-size: 0.68rem; }
 
 .footer-bottom {
   display: grid;
@@ -1548,14 +1701,47 @@ input:focus-visible {
 }
 
 /* Motion */
-@keyframes cosmic-copy-in {
-  from { opacity: 0; transform: translateY(1.5rem); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes hero-content-unfold {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 80% 0);
+    filter: blur(0.3rem);
+    transform: translateY(var(--hero-reveal-distance));
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    filter: blur(0);
+    transform: translateY(0);
+  }
 }
 
-@keyframes cosmic-planet-in {
-  from { transform: translateX(2rem) scale(0.94); }
-  to { transform: translateX(0) scale(1); }
+@keyframes hero-name-unfold {
+  from {
+    opacity: 0;
+    filter: blur(0.25rem);
+    transform: translateY(105%) rotateX(-48deg);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+@keyframes hero-stage-unfold {
+  from {
+    opacity: 0;
+    clip-path: inset(0 48%);
+    filter: blur(0.5rem);
+    transform: translateX(var(--hero-stage-offset)) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
 }
 
 @keyframes orbit-drift {
@@ -1611,6 +1797,7 @@ input:focus-visible {
 }
 
 @media (max-width: 48rem) {
+  .cosmic-hero { --hero-reveal-distance: 0.75rem; }
   .site-wordmark { gap: 0.55rem; }
   .site-wordmark__copy small { display: none; }
   .site-planet-mark { width: 1.75rem; height: 1.75rem; flex-basis: 1.75rem; }
@@ -1637,7 +1824,7 @@ input:focus-visible {
   .hero-current article p { font-size: 0.7rem; }
   .hero-explore { width: 100%; justify-content: center; }
   .hero-explore__arrow { margin-inline-start: auto; }
-  .hero-planet-stage { width: min(100%, 31rem); justify-self: center; }
+  .hero-planet-stage { --hero-stage-offset: 1.25rem; width: min(100%, 31rem); justify-self: center; }
   .hero-planet { inset: 10% 7% 8%; }
   .hero-moon--one { width: 3rem; height: 3rem; }
 
@@ -1663,15 +1850,21 @@ input:focus-visible {
   .about-cosmos { grid-template-columns: minmax(0, 1fr); gap: 3rem; }
   .about-portrait-stage { width: min(88vw, 28rem); }
   .about-copy h3 { font-size: 2.25rem; }
+  .about-history { grid-template-columns: minmax(0, 1fr); }
+  .about-history__group + .about-history__group {
+    border-block-start: 1px solid oklch(72% 0.1 276 / 0.2);
+    border-inline-start: 0;
+  }
+  .about-honors-list { grid-template-columns: minmax(0, 1fr); }
 
   .life-page-intro::after,
   .projects-intro::after,
   .orbito-intro::after { inset-inline-end: -18%; opacity: 0.62; }
 
   .site-footer::before { inset-inline-start: 5%; }
-  .contact-panel { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+  .contact-panel { grid-template-columns: minmax(0, 1fr); column-gap: 0; row-gap: 2rem; }
   .contact-panel__intro h2 { max-width: 11ch; }
-  .contact-panel__social { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .contact-panel__social { grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; padding-block-start: 1.25rem; }
   .footer-bottom { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; align-items: start; }
 }
 
@@ -1688,6 +1881,8 @@ input:focus-visible {
   .life-constellation__item:nth-child(5) figure { aspect-ratio: 16 / 11; }
   .about-facts { gap: 0.45rem; }
   .about-facts dt { font-size: 1.45rem; }
+  .about-experience-list li { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
+  .about-history__role { justify-self: start; text-align: start; }
   .contact-panel { padding: 0; border-radius: 0; }
   .contact-panel__intro h2 { font-size: clamp(2.35rem, 12vw, 3.15rem); }
   .contact-panel__direct { gap: 0.6rem; }
@@ -1697,7 +1892,14 @@ input:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
   [data-reveal] > * { opacity: 1; filter: none; clip-path: none; transform: none; }
-  .cosmic-hero__copy,
+  .hero-eyebrow,
+  .hero-name-character,
+  .hero-english-name,
+  .cosmic-hero__copy > .hero-statement,
+  .hero-traits li,
+  .hero-current__label,
+  .hero-current article,
+  .hero-explore,
   .hero-planet-stage,
   .hero-orbit,
   .project-planet__orbit,
@@ -1719,7 +1921,12 @@ input:focus-visible {
   .site-header,
   .hero-current article,
   .hero-explore,
-  .project-query { background: var(--cosmic-panel-solid); backdrop-filter: none; }
+  .project-query,
+  .about-history {
+    background: var(--cosmic-panel-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 /* Single-page project and life edition */
