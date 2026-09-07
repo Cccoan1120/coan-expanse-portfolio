@@ -48,7 +48,7 @@ describe("portfolio content contract", () => {
     expect(ranks.size).toBe(17);
     rankedProjects.forEach((project) => {
       expect(project.logo.alt.trim()).not.toBe("");
-      expect(project.logo.src).toMatch(/^\/images\/project-logos\/[a-z0-9-]+\.(?:png|svg)$/);
+      expect(project.logo.src).toMatch(/^\/images\/project-logos\/[a-z0-9-]+\.(?:png|webp|svg)$/);
       expect(existsSync(join(publicRoot, project.logo.src.replace(/^\//, ""))), project.logo.src).toBe(true);
     });
   });

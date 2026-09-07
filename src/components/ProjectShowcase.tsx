@@ -46,7 +46,6 @@ function ProjectLogo({ project, eager = false }: { project: Project; eager?: boo
 function ProjectWorkDetails({ project }: { project: Project }) {
   const actions = project.actions ?? [];
   const outcomes = project.outcomes ?? [];
-  if (!actions.length && !outcomes.length) return null;
 
   return (
     <details className="project-work-details">
@@ -55,6 +54,7 @@ function ProjectWorkDetails({ project }: { project: Project }) {
         <MaterialIcon>add</MaterialIcon>
       </summary>
       <div className="project-work-details__content">
+        <p className="project-work-details__overview">{project.summary}</p>
         {actions.length ? (
           <section>
             <h4>我做了什么</h4>
@@ -63,8 +63,15 @@ function ProjectWorkDetails({ project }: { project: Project }) {
         ) : null}
         {outcomes.length ? (
           <section>
-            <h4>形成结果</h4>
+            <h4>做到了什么</h4>
             <ul>{outcomes.map((item) => <li key={item}>{item}</li>)}</ul>
+          </section>
+        ) : null}
+        <SkillList project={project} limit={project.skills.length} />
+        {project.boundaries?.length ? (
+          <section className="showcase-boundary">
+            <h4>使用与公开边界</h4>
+            <ul>{project.boundaries.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
         ) : null}
       </div>
@@ -92,21 +99,13 @@ function MineFeature({ project }: { project: Project }) {
         </div>
         <h3>{project.title}</h3>
         <p className="showcase-english-title">{project.englishTitle}</p>
-        <p className="showcase-tagline">{project.tagline}</p>
-        <p className="showcase-summary">{project.summary}</p>
+        <p className="showcase-summary">{project.tagline}</p>
         <dl className="showcase-facts">
           <div><dt>我的角色</dt><dd>{project.role}</dd></div>
           <div><dt>项目周期</dt><dd>{project.timeframe}</dd></div>
           <div><dt>公开状态</dt><dd>{project.privacy}</dd></div>
         </dl>
-        <SkillList project={project} limit={5} />
         <ProjectWorkDetails project={project} />
-        {project.boundaries?.length ? (
-          <div className="showcase-boundary">
-            <strong>公开边界</strong>
-            <p>{project.boundaries[0]}</p>
-          </div>
-        ) : null}
         <ProjectLinks project={project} />
       </div>
     </article>
@@ -125,8 +124,8 @@ function ProjectCard({ project, number }: { project: Project; number: number }) 
         </div>
         <h3>{project.title}</h3>
         <p className="showcase-english-title">{project.englishTitle}</p>
-        <p className="showcase-summary">{project.summary}</p>
-        <SkillList project={project} limit={4} />
+        <p className="showcase-summary">{project.tagline}</p>
+        <p className="showcase-role">{project.role}</p>
         <ProjectWorkDetails project={project} />
         <ProjectLinks project={project} />
       </div>
@@ -155,11 +154,11 @@ function SolutionRow({ project }: { project: Project }) {
         </dl>
         <div className="solution-row__columns">
           <section>
-            <h5>我做了什么</h5>
+            <h4>我做了什么</h4>
             <ul>{project.actions?.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
           <section>
-            <h5>形成什么</h5>
+            <h4>做到了什么</h4>
             <ul>{project.outcomes?.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
         </div>
@@ -175,8 +174,8 @@ export function ProjectShowcase() {
   return (
     <section className="project-showcase cosmic-section page-shell" id="projects" aria-labelledby="projects-title">
       <header className="project-showcase__header" data-reveal>
-        <h2 id="projects-title">把生活过得辽阔一点，把热爱做得具体一点。</h2>
-        <p className="project-showcase__subtitle">作品展示</p>
+        <h2 id="projects-title">作品</h2>
+        <p className="project-showcase__subtitle">把生活过得辽阔一点，把热爱做得具体一点。</p>
       </header>
       <MineFeature project={mine} />
       <div className="showcase-grid">
@@ -187,7 +186,7 @@ export function ProjectShowcase() {
       <section className="solution-showcase" aria-labelledby="solutions-title">
         <header data-reveal>
           <h3 id="solutions-title">方案展示</h3>
-          <p>商业研究、数据分析与产品构想，点击任一方案查看我的工作与结果。</p>
+          <p>从实地调研到商业测算，记录每个方案中的具体工作。</p>
         </header>
         <div className="solution-showcase__list">
           {solutionShowcaseProjects.map((project) => <SolutionRow project={project} key={project.slug} />)}

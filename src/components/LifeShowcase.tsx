@@ -5,8 +5,8 @@ import { MaterialIcon } from "./MaterialIcon";
 import { ResponsiveImage } from "./ResponsiveImage";
 
 const chapters = [
-  { title: "在路上", description: "喜欢往外走。去草原、爬山、攀岩，也在一次次出发里认识新的地方和新的人。", entries: lifeEntries.slice(0, 4) },
-  { title: "长期输入", description: "播客、阅读、展演和现场喜剧。那些持续进入生活的声音，也在慢慢塑造我看事情的方式。", entries: lifeEntries.slice(4) },
+  { id: "life-在路上", title: "在路上", description: "去草原、爬山、攀岩，看看新的地方，也认识新朋友。", entries: lifeEntries.slice(0, 4) },
+  { id: "life-长期输入", title: "最近在听、在看", description: "听播客、读书，也去现场看展演和喜剧。", entries: lifeEntries.slice(4) },
 ] as const;
 
 function LifeMedia({ entry }: { entry: LifeEntry }) {
@@ -26,9 +26,9 @@ export function LifeShowcase() {
       </header>
       <div className="life-chapters">
         {chapters.map((chapter) => (
-          <section className="life-chapter" aria-labelledby={`life-${chapter.title}`} key={chapter.title} data-reveal>
+          <section className="life-chapter" aria-labelledby={chapter.id} key={chapter.id} data-reveal>
             <header>
-              <h3 id={`life-${chapter.title}`}>{chapter.title}</h3>
+              <h3 id={chapter.id}>{chapter.title}</h3>
               <p>{chapter.description}</p>
             </header>
             <div className="life-chapter__grid">

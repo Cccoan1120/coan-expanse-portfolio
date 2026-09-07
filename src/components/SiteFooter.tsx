@@ -9,7 +9,18 @@ const socialIcon = {
 
 export function SiteFooter({ onOpenWechat }: { onOpenWechat: () => void }) {
   const [emailVisible, setEmailVisible] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "pending" | "success" | "error">("idle");
   const socialLinks = profile.socialLinks.filter((link) => link.platform === "douyin" || link.platform === "xiaohongshu");
+
+  const copyEmail = async () => {
+    setCopyState("pending");
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopyState("success");
+    } catch {
+      setCopyState("error");
+    }
+  };
 
   return (
     <footer className="site-footer" id="contact">
@@ -18,23 +29,49 @@ export function SiteFooter({ onOpenWechat }: { onOpenWechat: () => void }) {
           <div className="contact-panel__intro">
             <p className="contact-kicker"><span>03</span> / CONTACT</p>
             <h2 id="contact-title">一起把想法<br />做成能用的东西。</h2>
-            <p>想聊产品、AI 应用、数据分析，或者只是交换一个正在发芽的想法，都欢迎来找我。</p>
+            <p>聊产品、AI 应用、数据分析，或者分享最近做的东西，都欢迎来找我。</p>
           </div>
 
           <div className="contact-panel__direct" aria-label="直接联系方式">
-            <button
-              className="contact-card contact-card--email"
-              type="button"
-              aria-expanded={emailVisible}
-              onClick={() => setEmailVisible((visible) => !visible)}
-            >
-              <span className="contact-card__icon"><MaterialIcon>mail</MaterialIcon></span>
-              <span className="contact-card__copy">
-                <strong>我的邮箱</strong>
-                <small aria-live="polite">{emailVisible ? profile.email : "点击显示邮箱"}</small>
-              </span>
-              <MaterialIcon className="contact-card__arrow">{emailVisible ? "visibility_off" : "visibility"}</MaterialIcon>
-            </button>
+            <div className="contact-email">
+              <button
+                className="contact-card contact-card--email"
+                type="button"
+                aria-expanded={emailVisible}
+                aria-controls="contact-email-details"
+                onClick={() => {
+                  setEmailVisible((visible) => !visible);
+                  setCopyState("idle");
+                }}
+              >
+                <span className="contact-card__icon"><MaterialIcon>mail</MaterialIcon></span>
+                <span className="contact-card__copy">
+                  <strong>我的邮箱</strong>
+                  <small>{emailVisible ? "收起邮箱" : "点击显示邮箱"}</small>
+                </span>
+                <MaterialIcon className="contact-card__arrow">{emailVisible ? "visibility_off" : "visibility"}</MaterialIcon>
+              </button>
+              {emailVisible && (
+                <div className="contact-email__details" id="contact-email-details">
+                  <div className="contact-email__row">
+                    <span className="contact-email__address">{profile.email}</span>
+                    <button
+                      className="contact-email__copy"
+                      type="button"
+                      aria-label="复制邮箱"
+                      title={copyState === "success" ? "已复制，再次复制邮箱" : "复制邮箱"}
+                      disabled={copyState === "pending"}
+                      onClick={copyEmail}
+                    >
+                      <MaterialIcon>{copyState === "success" ? "check" : "content_copy"}</MaterialIcon>
+                    </button>
+                  </div>
+                  <p className="contact-email__feedback" role="status">
+                    {copyState === "success" ? "邮箱已复制" : copyState === "error" ? "复制失败，请重试，或选中邮箱手动复制。" : ""}
+                  </p>
+                </div>
+              )}
+            </div>
             <button className="contact-card" type="button" onClick={onOpenWechat}>
               <span className="contact-card__icon"><MaterialIcon>qr_code_2</MaterialIcon></span>
               <span className="contact-card__copy"><strong>加微信</strong><small>查看我的二维码</small></span>
@@ -69,7 +106,7 @@ export function SiteFooter({ onOpenWechat }: { onOpenWechat: () => void }) {
         <div className="footer-bottom">
           <div className="footer-brand">
             <div className="footer-brand__title">
-              <img className="site-brand-mark" src="/images/brand/coan-expanse-mark.png" alt="" width="64" height="64" />
+              <img className="site-brand-mark" src="/images/brand/coan-expanse-mark.webp" alt="" width="64" height="64" />
               <strong>霄汉无垠</strong>
             </div>
             <small>COAN EXPANSE</small>

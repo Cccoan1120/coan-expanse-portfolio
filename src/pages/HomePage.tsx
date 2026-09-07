@@ -8,25 +8,6 @@ import { honors, internships, profile } from "../content/profile";
 import { profileMedia } from "../content/profileMedia";
 import { solutionShowcaseProjects, workShowcaseProjects } from "../content/projects";
 
-const heroTraits = ["产品探索者", "生活爱好者", "长期学习者"];
-const currentFocus = [
-  {
-    icon: "school",
-    title: "北京语言大学 · 2027 届 · 会计专硕（MPAcc）",
-    description: "在北京语言大学读会计专硕，也在财务、商业分析与研究训练中持续积累。",
-  },
-  {
-    icon: "code",
-    title: "Vibe Coding",
-    description: "对 AI 和 Vibe Coding 始终很感兴趣，也一直在做自己真正喜欢的小产品。",
-  },
-  {
-    icon: "landscape",
-    title: "兴趣广泛",
-    description: "喜欢徒步、攀岩、健身和游泳，也爱播客、脱口秀与喜剧，让生活始终保持伸展感。",
-  },
-];
-
 export function HomePage() {
   useEffect(() => { document.title = "霄汉无垠｜COAN CHEN 的生活与作品"; }, []);
 
@@ -35,7 +16,7 @@ export function HomePage() {
       <section className="cosmic-hero" id="home" aria-labelledby="home-title">
         <div className="cosmic-hero__grid page-shell">
           <div className="cosmic-hero__copy">
-            <p className="hero-eyebrow"><span>你好，我是</span><small>HELLO, I'M</small></p>
+            <p className="hero-eyebrow">你好，我是</p>
             <h1 id="home-title" aria-label={profile.name}>
               {Array.from(profile.name).map((character) => (
                 <span className="hero-name-character" aria-hidden="true" key={character}>{character}</span>
@@ -43,23 +24,13 @@ export function HomePage() {
             </h1>
             <p className="hero-english-name">COAN CHEN</p>
             <p className="hero-statement">世界动荡 我不摇晃</p>
-            <ul className="hero-traits" aria-label="个人标签">
-              {heroTraits.map((trait) => <li key={trait}>{trait}</li>)}
-            </ul>
-            <div className="hero-current">
-              <p className="hero-current__label"><i aria-hidden="true" />最近在做 <small>CURRENTLY</small></p>
-              <div className="hero-current__list">
-                {currentFocus.map((item) => (
-                  <article key={item.title}>
-                    <span className="hero-current__icon"><MaterialIcon>{item.icon}</MaterialIcon></span>
-                    <div><h2>{item.title}</h2><p>{item.description}</p></div>
-                    <MaterialIcon className="hero-current__arrow">arrow_forward</MaterialIcon>
-                  </article>
-                ))}
-              </div>
-            </div>
+          </div>
+          <div className="hero-current">
+            <p className="hero-current__label">现在的我</p>
+            <p className="hero-current__education">北京语言大学 · 2027 届会计专硕</p>
+            <p className="hero-current__description">用 AI 做一些自己愿意用的小产品。空下来去徒步、攀岩，听播客、看脱口秀。</p>
             <a className="hero-explore" href="#projects">
-              <span className="hero-explore__copy"><strong>探索更多</strong><small>EXPLORE MORE</small></span>
+              <span className="hero-explore__copy"><strong>看看我的作品</strong></span>
               <span className="hero-explore__arrow" aria-hidden="true"><MaterialIcon>arrow_downward</MaterialIcon></span>
             </a>
           </div>
@@ -98,10 +69,8 @@ export function HomePage() {
           </div>
           <div className="about-copy">
             <h3>Hi，我是陈宵瀚</h3>
-            <p className="about-role"><strong>ENFJ，一个喜欢认识新朋友，也喜欢把新想法做出来的人。</strong></p>
-            {profile.aboutParagraphs.slice(0, 3).map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            <p className="about-closing"><strong>{profile.aboutParagraphs[3]}</strong></p>
-            <ul className="about-traits"><li>ENFJ</li><li>产品</li><li>AI</li><li>Vibe Coding</li><li>保持好奇</li></ul>
+            {profile.aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <ul className="about-traits"><li>ENFJ</li><li>产品</li><li>AI</li><li>Vibe Coding</li></ul>
             <dl className="about-facts">
               <div><dt>{workShowcaseProjects.length}</dt><dd>作品 / Projects</dd></div>
               <div><dt>{solutionShowcaseProjects.length}</dt><dd>产品实验 / Experiments</dd></div>

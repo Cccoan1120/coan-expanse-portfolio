@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const navTargets = ["projects", "life", "contact"];
+const navTargets = ["projects", "life", "about", "contact"];
 
 test("renders the complete single-page portfolio in the approved order", async ({ page }) => {
   await page.goto("/");
@@ -21,7 +21,7 @@ test("renders the complete single-page portfolio in the approved order", async (
   expect(sectionOrder.indexOf("projects")).toBeLessThan(sectionOrder.indexOf("life"));
   expect(sectionOrder.indexOf("life")).toBeLessThan(sectionOrder.indexOf("about"));
   await expect(page.locator("#project-mine .showcase-number")).toHaveText("01");
-  await expect(page.getByRole("heading", { name: "把生活过得辽阔一点，把热爱做得具体一点。" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "作品", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "天地辽阔 好像怎么走都不会错" })).toBeVisible();
   await expect(page.locator("#projects")).not.toContainText("本地来源");
 });
@@ -38,7 +38,7 @@ test("renders all local life records with their existing media and public links"
   await expect(page.getByRole("heading", { name: "喜欢坐在观众席里" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "听别人聊聊世界" })).toBeVisible();
   await expect(page.locator("#grassland-horseback img")).toHaveAttribute("src", "/images/life/grassland-drive.webp");
-  await expect(page.locator("#life-在路上 + p")).toHaveText("喜欢往外走。去草原、爬山、攀岩，也在一次次出发里认识新的地方和新的人。");
+  await expect(page.locator("#life-在路上 + p")).toHaveText("去草原、爬山、攀岩，看看新的地方，也认识新朋友。");
   await expect(page.locator("#climbing .life-story-card__copy > p")).not.toContainText("第一次攀岩没多久就办了月卡");
   await expect(page.locator("#live-comedy .life-story-card__copy > p")).toHaveText("我一直很喜欢喜剧和脱口秀，也会经常去看不同的展演和现场演出。比起隔着屏幕看，我更喜欢坐在观众席里，和一群陌生人一起笑、一起感受现场的节奏。很多有意思的观点和表达，也是在这些轻松的时刻里被记住的。");
   await expect(page.getByRole("link", { name: /看看我的现场记录/ })).toHaveAttribute("href", /xiaohongshu\.com/);
@@ -54,7 +54,7 @@ test("uses logos only inside the project wall", async ({ page }) => {
   expect(sources.some((source) => source?.includes("project-media"))).toBe(false);
 });
 
-test("keeps three keyboard-accessible anchor links and the brand home link", async ({ page }) => {
+test("keeps four keyboard-accessible anchor links and the brand home link", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
@@ -63,17 +63,17 @@ test("keeps three keyboard-accessible anchor links and the brand home link", asy
   await page.reload();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(1);
   const navigation = page.locator(".desktop-nav");
-  await expect(navigation.getByRole("link")).toHaveCount(3);
+  await expect(navigation.getByRole("link")).toHaveCount(4);
   for (const target of navTargets) {
     await expect(navigation.locator(`a[href="/#${target}"]`)).toHaveCount(1);
   }
   await expect(navigation.getByRole("link", { name: /作品/ })).toBeVisible();
   await expect(navigation.getByRole("link", { name: /生活/ })).toBeVisible();
   await expect(navigation.getByRole("link", { name: /联系/ })).toBeVisible();
-  await expect(navigation.getByRole("link", { name: /关于/ })).toHaveCount(0);
+  await expect(navigation.getByRole("link", { name: /关于/ })).toBeVisible();
   await expect(page.locator(".site-wordmark")).toHaveAttribute("href", "/");
   await expect(page.locator(".site-brand-mark")).toHaveCount(2);
-  await expect(page.locator(".site-brand-mark").first()).toHaveAttribute("src", "/images/brand/coan-expanse-mark.png");
+  await expect(page.locator(".site-brand-mark").first()).toHaveAttribute("src", "/images/brand/coan-expanse-mark.webp");
 
   await navigation.locator('a[href="/#life"]').click();
   await expect(page).toHaveURL(/\/#life$/);
@@ -96,8 +96,8 @@ test("keeps three keyboard-accessible anchor links and the brand home link", asy
 test("shows formal project introductions with expandable work details", async ({ page }) => {
   await page.goto("/#projects");
   const subtitleSize = await page.locator(".project-showcase__subtitle").evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
-  expect(subtitleSize).toBeGreaterThanOrEqual(16.8);
-  await expect(page.locator("#project-offer-atlas .showcase-summary")).toContainText("求职准备");
+  expect(subtitleSize).toBeGreaterThanOrEqual(16);
+  await expect(page.locator("#project-offer-atlas .showcase-summary")).toContainText("面试");
   await page.locator("#project-offer-atlas .project-work-details summary").click();
   await expect(page.locator("#project-offer-atlas .project-work-details")).toHaveAttribute("open", "");
   await expect(page.locator("#project-offer-atlas .project-work-details")).toContainText("我做了什么");
@@ -111,10 +111,10 @@ test("shows formal project introductions with expandable work details", async ({
   expect(logoStyle.width).toBeGreaterThan(70);
 
   const logoSources = await page.locator("#projects img").evaluateAll((images) => images.map((image) => image.getAttribute("src")));
-  expect(logoSources).toContain("/images/project-logos/music-market-radar.png");
-  expect(logoSources).toContain("/images/project-logos/kol-review-desk-transparent.png");
-  expect(logoSources).toContain("/images/project-logos/teeni-insight-suite.png");
-  expect(logoSources).toContain("/images/project-logos/offerexpert.png");
+  expect(logoSources).toContain("/images/project-logos/music-market-radar.webp");
+  expect(logoSources).toContain("/images/project-logos/kol-review-desk-transparent.webp");
+  expect(logoSources).toContain("/images/project-logos/teeni-insight-suite.webp");
+  expect(logoSources).toContain("/images/project-logos/offerexpert.webp");
 
   const logoWidths = await page.locator("#project-orbito .showcase-logo-stage img, #project-offer-atlas .showcase-logo-stage img")
     .evaluateAll((images) => images.map((image) => Number.parseFloat(getComputedStyle(image).width)));
@@ -154,13 +154,12 @@ test("uses pointer-responsive cosmic stages and the revised about copy", async (
   } else {
     await expect(page.locator(".hero-planet-stage")).not.toHaveAttribute("data-cosmic-active", "true");
   }
-  await expect(page.locator(".about-role")).toHaveText("ENFJ，一个喜欢认识新朋友，也喜欢把新想法做出来的人。");
-  await expect(page.locator(".about-traits li")).toHaveText(["ENFJ", "产品", "AI", "Vibe Coding", "保持好奇"]);
+  await expect(page.locator(".about-traits li")).toHaveText(["ENFJ", "产品", "AI", "Vibe Coding"]);
   await expect(page.locator(".about-facts")).toContainText("生活切片 / Moments");
   await expect(page.locator(".about-copy > a")).toHaveCount(0);
-  await expect(page.locator(".about-copy")).toContainText("我是一个挺外向的人，喜欢聊天、认识新朋友，也很享受和不同的人交换经历和想法。");
-  await expect(page.locator(".about-copy")).toContainText("比起做一个看起来很厉害的产品，我更喜欢解决那些真实又具体的小问题");
-  await expect(page.locator(".about-closing")).toHaveText("大概就是这样：喜欢认识人，喜欢体验新的东西，也喜欢把脑子里的想法变成真的。");
+  await expect(page.locator(".about-copy > p")).toHaveCount(2);
+  await expect(page.locator(".about-copy")).toContainText("我喜欢聊天、认识新朋友，听他们讲各自的经历。");
+  await expect(page.locator(".about-copy")).toContainText("先做出自己愿意用的版本，再请朋友试试，根据反馈继续改。");
   await expect(page.locator(".about-experience-list li")).toHaveCount(3);
   await expect(page.locator(".about-experience-list")).toContainText("北京汀灵智能科技有限公司");
   await expect(page.locator(".about-experience-list")).toContainText("产品运营实习生");
@@ -334,7 +333,7 @@ test("opens the mobile menu and restores focus on Escape", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "打开导航" });
   await trigger.focus();
   await page.keyboard.press("Enter");
-  await expect(page.locator("#mobile-navigation").getByRole("link")).toHaveCount(3);
+  await expect(page.locator("#mobile-navigation").getByRole("link")).toHaveCount(4);
   await page.keyboard.press("Escape");
   await expect(page.locator("#mobile-navigation")).toHaveAttribute("aria-hidden", "true");
   await expect(trigger).toBeFocused();

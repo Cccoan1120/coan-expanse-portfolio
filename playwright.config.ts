@@ -1,11 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const port = Number(process.env.PLAYWRIGHT_PORT || 4317);
+
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
   reporter: "line",
   use: {
-    baseURL: "http://127.0.0.1:4317",
+    baseURL: `http://127.0.0.1:${port}`,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
@@ -23,8 +25,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run preview -- --port 4317",
-    port: 4317,
+    command: `npm run preview -- --port ${port} --strictPort`,
+    port,
     reuseExistingServer: false,
   },
 });

@@ -21,14 +21,16 @@
 - 英文品牌与 Display：本地 Hanken Grotesk Variable，仅作为辅助识别层。
 - 英文项目标题：本地 Cormorant Garamond Variable，仅用于 Logo 项目墙的英文副标题。
 - Metadata：本地 JetBrains Mono Variable，仅用于编号、年份和真实状态；不把等宽字作为科技感装饰。
-- Icon：本地 Material Symbols Outlined。
+- Icon：按需打包的 Lucide SVG 图标，不加载整包图标字体。
 
 完整取值集中在根目录 `tokens.css`，页面不得直接请求远程字体或图标服务。
 
 ## Page composition
 
 - 首页顺序固定为首屏、项目、生活、关于、联系。
+- 首屏保留姓名、座右铭与骑马星球照片，现状以学历和简短介绍呈现；手机上照片先于现状介绍，作品入口保持可见。
 - 项目区展示 7 个 Logo 作品。Mine 为唯一跨两列重点卡，其余 6 项组成桌面双列、移动单列的编号项目墙。
+- 作品卡外层展示用途、本人角色与状态；完整介绍、技术标签及公开边界保留在展开详情。作品区使用“作品”主标题，原短句作为辅助文字。
 - 另有 5 个方案以无 Logo 的可展开文字行展示；5 个支撑型历史项目保留在数据与旧源码中，不进入首页。
 - Logo 作品不展示产品截图。行星舞台使用材质、明暗面与单一克制轨道，不复制参考站的宝剑元素。
 - 生活区按“在路上 / 长期输入”合并 6 条记录，每段保留本地媒体、短文和真实公开来源入口。
@@ -38,6 +40,9 @@
 公开页面为 `/`。首页锚点包括 `/#projects`、`/#life`、`/#about`、`/#contact` 和 `/#project-<slug>`；旧地址使用替换式跳转回对应锚点，无效项目进入 404。
 
 ## Motion and shader
+
+- 首页占据完整视口，作品标题从下一屏开始，底部仅保留细分隔与首屏作品入口。
+- 背景、星球和轨道恢复原有星云着色器与 CSS 光晕、椭圆轨道效果；保留放大后的首屏布局。
 
 - WebGL 背景使用 Stitch 导出的 GLSL 逻辑，并限制设备像素比；背景不显示网格，采用静态分布星点与缓慢星云。
 - 星云与两层星点以不同的低速轨迹持续漂移；页面隐藏时暂停渲染，`prefers-reduced-motion` 下固定为静态帧。
@@ -58,7 +63,7 @@
 
 - 生产图片位于 `public/images/project-media/`，提供 AVIF、WebP 及小尺寸版本。
 - `src/content/projectMedia.ts` 是真实媒体映射层，不修改 `Project` 数据结构。
-- `src/content/projects.ts` 为每个项目提供必填 Logo 与 `showcaseRank`；Logo 位于 `public/images/project-logos/`。
+- `src/content/projects.ts` 为每个项目提供必填 Logo 与 `showcaseRank`；Logo 位于 `public/images/project-logos/`。首页使用 WebP 衍生图，原 PNG 保留，可用 `node scripts/generate-logo-media.mjs` 重新生成。
 - 项目墙不引用 `projectMedia`，该映射层仅供旧案例源码和生活记录中的既有媒体使用。
 - KOL 仅使用不可逆遮盖后的扁平化图片，原始敏感截图不进入网站目录。
 - Stitch 原型图片继续作为历史备份保留，但生产页面不再引用。

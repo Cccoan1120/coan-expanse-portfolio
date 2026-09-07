@@ -27,7 +27,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 
-.material-symbols-outlined { display: inline-block; width: 1em; flex: 0 0 1em; overflow: hidden; white-space: nowrap; font-family: "Material Symbols Outlined" !important; font-size: 1.125rem; font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 20; font-weight: normal; line-height: 1; }
+.material-symbols-outlined { display: inline-block; width: 1em; height: 1em; flex: 0 0 1em; vertical-align: middle; font-size: 1.125rem; }
 .skip-link { position: fixed; z-index: 200; inset-block-start: var(--space-sm); inset-inline-start: var(--space-sm); padding: var(--space-sm) var(--space-md); transform: translateY(-180%); background: var(--stellar); color: var(--void); font-family: var(--font-mono); font-size: var(--text-xs); }
 .skip-link:focus { transform: translateY(0); }
 .visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; }
